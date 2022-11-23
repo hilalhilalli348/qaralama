@@ -17,12 +17,16 @@ public class ScanCustomerDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
-        System.out.println("scan customer delegate");
         int id = (int) delegateExecution.getVariable("customer_id");
 
         CustomerResponse customer = customerDAO.getCustomer(id);
 
-        delegateExecution.setVariable("customerResponse",customer);
+        if (customer!=null){
+            delegateExecution.setVariable("customerResponse",customer);
+            delegateExecution.setVariable("customerExsist",true);
+        }else {
+            delegateExecution.setVariable("customerExsist",false);
+        }
 
     }
 }

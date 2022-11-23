@@ -1,6 +1,9 @@
 package com.example.workflow.dto;
 
-public class AccountResponse {
+
+import java.io.Serializable;
+
+public class AccountResponse implements Serializable {
     private String accountNumber;
     private int balance;
     private String currency;
@@ -36,5 +39,14 @@ public class AccountResponse {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountResponse{" +
+                "accountNumber='" + accountNumber + '\'' +
+                ", balance=" + balance +
+                ", currency='" + currency + '\'' +
+                '}';
     }
 }

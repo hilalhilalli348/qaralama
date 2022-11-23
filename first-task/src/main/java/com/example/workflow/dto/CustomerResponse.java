@@ -2,9 +2,10 @@ package com.example.workflow.dto;
 
 import com.example.workflow.model.Account;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CustomerResponse {
+public class CustomerResponse implements Serializable {
     private String name;
     private String surname;
     private List<AccountResponse> accountList;

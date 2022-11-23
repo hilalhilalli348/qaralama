@@ -1,6 +1,8 @@
 package com.example.workflow.dto;
 
-public class CustomerRequest {
+import java.io.Serializable;
+
+public class CustomerRequest implements Serializable {
     private String name;
     private String surname;
 

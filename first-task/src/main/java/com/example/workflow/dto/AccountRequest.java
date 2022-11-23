@@ -1,7 +1,9 @@
 package com.example.workflow.dto;
 
 
-public class AccountRequest {
+import java.io.Serializable;
+
+public class AccountRequest implements Serializable {
     private String accountNumber;
     private int balance;
     private String currency;
