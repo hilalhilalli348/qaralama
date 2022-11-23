@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_16743cv" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1">
+  <bpmn:process id="customerbpm" name="customer-in hesabinin alinmasi" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_1681i3k" sourceRef="StartEvent_1" targetRef="Activity_0dmo73d" />
+    <bpmn:sequenceFlow id="Flow_1m3fuoj" sourceRef="Activity_0dmo73d" targetRef="Gateway_0c94x5j" />
+    <bpmn:sequenceFlow id="Flow_022nb9g" name="var" sourceRef="Gateway_0c94x5j" targetRef="Activity_0a3jpxm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{customerExsist==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:task id="Activity_15r4mdf" name="customer-in olmadigini bildir">
+      <bpmn:extensionElements>
+        <camunda:executionListener delegateExpression="${customerNotFoundDelegate}" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_059z22v</bpmn:incoming>
+      <bpmn:outgoing>Flow_05ay8lg</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_059z22v" name="yox" sourceRef="Gateway_0c94x5j" targetRef="Activity_15r4mdf">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{customerExsist==false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0nna6dc" name="son">
+      <bpmn:incoming>Flow_19f1a0x</bpmn:incoming>
+      <bpmn:incoming>Flow_05ay8lg</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_19f1a0x" sourceRef="Activity_0a3jpxm" targetRef="Event_0nna6dc" />
+    <bpmn:sequenceFlow id="Flow_05ay8lg" sourceRef="Activity_15r4mdf" targetRef="Event_0nna6dc" />
+    <bpmn:exclusiveGateway id="Gateway_0c94x5j" name="bele id-li customer var mi?">
+      <bpmn:extensionElements>
+        <camunda:executionListener delegateExpression="${checkCustomerDelegate}" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1m3fuoj</bpmn:incoming>
+      <bpmn:outgoing>Flow_022nb9g</bpmn:outgoing>
+      <bpmn:outgoing>Flow_059z22v</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="StartEvent_1" name="basla">
+      <bpmn:outgoing>Flow_1681i3k</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_0dmo73d" name="request ile gelen customer-in id-sin al">
+      <bpmn:extensionElements>
+        <camunda:executionListener delegateExpression="${scanCustomerDelegate}" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1681i3k</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m3fuoj</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Activity_0a3jpxm" name="hesab melumatlarin al">
+      <bpmn:extensionElements>
+        <camunda:executionListener delegateExpression="${receiveAccountDelegate}" event="start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_022nb9g</bpmn:incoming>
+      <bpmn:outgoing>Flow_19f1a0x</bpmn:outgoing>
+    </bpmn:task>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="customerbpm">
+      <bpmndi:BPMNEdge id="Flow_05ay8lg_di" bpmnElement="Flow_05ay8lg">
+        <di:waypoint x="700" y="410" />
+        <di:waypoint x="791" y="410" />
+        <di:waypoint x="791" y="247" />
+        <di:waypoint x="882" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19f1a0x_di" bpmnElement="Flow_19f1a0x">
+        <di:waypoint x="700" y="120" />
+        <di:waypoint x="791" y="120" />
+        <di:waypoint x="791" y="247" />
+        <di:waypoint x="882" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_059z22v_di" bpmnElement="Flow_059z22v">
+        <di:waypoint x="450" y="272" />
+        <di:waypoint x="450" y="410" />
+        <di:waypoint x="600" y="410" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="461" y="326" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_022nb9g_di" bpmnElement="Flow_022nb9g">
+        <di:waypoint x="450" y="222" />
+        <di:waypoint x="450" y="120" />
+        <di:waypoint x="600" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="462" y="173" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m3fuoj_di" bpmnElement="Flow_1m3fuoj">
+        <di:waypoint x="370" y="247" />
+        <di:waypoint x="425" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1681i3k_di" bpmnElement="Flow_1681i3k">
+        <di:waypoint x="215" y="247" />
+        <di:waypoint x="270" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_15r4mdf_di" bpmnElement="Activity_15r4mdf">
+        <dc:Bounds x="600" y="370" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0nna6dc_di" bpmnElement="Event_0nna6dc">
+        <dc:Bounds x="882" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="891" y="272" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0s1eoso_di" bpmnElement="Gateway_0c94x5j" isMarkerVisible="true">
+        <dc:Bounds x="425" y="222" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="487" y="240" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ds72et_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="184" y="272" width="27" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0347kl5_di" bpmnElement="Activity_0dmo73d">
+        <dc:Bounds x="270" y="207" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_05ddbsz_di" bpmnElement="Activity_0a3jpxm">
+        <dc:Bounds x="600" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
